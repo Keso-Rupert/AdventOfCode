@@ -3,7 +3,7 @@ import numpy
 
 inputFile = open("day6/input.txt", "r")
 
-times = re.findall(" \d+", inputFile.readline())
+times = re.findall("\d+", inputFile.readline())
 distances = re.findall("\d+", inputFile.readline())
 
 ways = []
@@ -22,6 +22,3 @@ for i in range(0, len(times)):
             ways[i] += 1
 
 print(numpy.prod(ways))
-
-
-
