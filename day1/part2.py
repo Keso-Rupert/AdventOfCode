@@ -51,8 +51,7 @@ for line in inputFile:
                 firstDigit = (index, str(DIGITS.index(digit)+1))
                 lastDigit = (index, str(DIGITS.index(digit)+1))
             lastOccurenceIndex = line.rfind(digit) # Finde the last index of the digit to check if the word is there more than once
-            if index is not lastOccurenceIndex: # When the indexes are different, there is another instance of the word
-                if lastOccurenceIndex > lastDigit[0]: # if found index is bigger than lastDigit's index, change it
+            if index is not lastOccurenceIndex and lastOccurenceIndex > lastDigit[0]: # if found index is diff from index and it is bigger than lastDigit's index, change it
                     lastDigit = (lastOccurenceIndex, str(DIGITS.index(digit)+1))
 
     result = int(firstDigit[1] + lastDigit[1])
