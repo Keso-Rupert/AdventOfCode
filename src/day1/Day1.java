@@ -1,17 +1,15 @@
-///usr/bin/env jbang "$0" "$@" ; exit $?
+package day1;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static java.lang.System.*;
 
-public class day1 {
+public class Day1 {
 
     static int floor = 0;
 
@@ -27,7 +25,7 @@ public class day1 {
 
         // More modern way of reading the input file, using NIO2
         try {
-            String input = Files.readString(Path.of("day1/input.txt"));
+            String input = Files.readString(Path.of("src/day1/input.txt"));
             int floor = 0;
 
             for (char character : input.toCharArray()) {
@@ -51,7 +49,7 @@ public class day1 {
     private static void solvePart1() {
         List<Character> inputList = new ArrayList<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader("day1/input.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/day1/input.txt"))) {
             int cr;
             while ((cr = br.read()) != -1) {
                 char character = (char) cr;
