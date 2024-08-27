@@ -29,14 +29,14 @@ public class Day6 {
             Coords startingCoords = getStartingCoords(line);
             Coords endingCoords = getEndingCoords(line);
 
-            if (line.startsWith("turnon")) {
-                turnOnLightAtCoords(startingCoords, endingCoords);
-            } else if ( line.startsWith("turnoff")){
-                turnOffLightAtCoords(startingCoords, endingCoords);
-            } else {
-                // Toggle behaviour
-                for (int x = startingCoords.x(); x <= endingCoords.x(); x++) {
-                    for (int y = startingCoords.y(); y <= endingCoords.y(); y++) {
+            for (int x = startingCoords.x(); x <= endingCoords.x(); x++) {
+                for (int y = startingCoords.y(); y <= endingCoords.y(); y++) {
+                    if (line.startsWith("turnon")) {
+                        turnedOnLights.add(new Coords(x, y));
+                    } else if ( line.startsWith("turnoff")){
+                        turnedOnLights.remove(new Coords(x, y));
+                    } else {
+                        // Toggle behaviour
                         if (turnedOnLights.contains(new Coords(x, y))) {
                             turnedOnLights.remove(new Coords(x, y));
                         } else {
@@ -64,7 +64,6 @@ public class Day6 {
     }
 
     private static void turnOnLightAtCoords(Coords startingCoords, Coords endingCoords) {
-
         for (int x = startingCoords.x(); x <= endingCoords.x(); x++) {
             for (int y = startingCoords.y(); y <= endingCoords.y(); y++) {
                 turnedOnLights.add(new Coords(x, y));
