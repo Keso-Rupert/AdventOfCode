@@ -13,7 +13,7 @@ public class Day5 {
 
         Supplier<Stream<String>> linesSupplier = () -> {
             try {
-                return Files.lines(Path.of("src/day5/input.txt"));
+                return Files.lines(Path.of("2015/src/day5/input.txt"));
             } catch (IOException e) {
                 e.printStackTrace();
             }

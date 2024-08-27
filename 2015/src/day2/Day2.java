@@ -22,7 +22,7 @@ public class Day2 {
         AtomicInteger totalWrappingPaper = new AtomicInteger(); // Oof not nice that this needs to be atomic...
 
         try {
-            Stream<String> inputStream = Files.lines(Path.of("src/day2/input.txt"));
+            Stream<String> inputStream = Files.lines(Path.of("2015/src/day2/input.txt"));
             inputStream.forEach(line -> {
 
                 List<Integer> dimensions = Arrays.stream(line.split("x")).map(Integer::parseInt).collect(Collectors.toList());

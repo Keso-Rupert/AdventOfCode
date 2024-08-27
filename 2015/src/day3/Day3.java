@@ -21,7 +21,7 @@ public class Day3 {
         Coords currentCoords = new Coords(0,0);
         visitsMap.put(currentCoords, 1);
 
-        try (BufferedReader reader = Files.newBufferedReader(Path.of("src/day3/input.txt"))) {
+        try (BufferedReader reader = Files.newBufferedReader(Path.of("2015/src/day3/input.txt"))) {
             int character;
             while ((character = reader.read()) != -1) {
 

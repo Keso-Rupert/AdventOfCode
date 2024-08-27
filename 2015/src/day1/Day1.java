@@ -25,7 +25,7 @@ public class Day1 {
 
         // More modern way of reading the input file, using NIO2
         try {
-            String input = Files.readString(Path.of("src/day1/input.txt"));
+            String input = Files.readString(Path.of("2015/src/day1/input.txt"));
             int floor = 0;
 
             for (char character : input.toCharArray()) {
