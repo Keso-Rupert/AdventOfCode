@@ -4,9 +4,8 @@ import util.InputReader;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 public class Day6 {
@@ -20,7 +19,6 @@ public class Day6 {
         solvePart1(reader.getInputStreamForLines());
         solvePart2(reader.getInputStreamForLines());
     }
-
 
     private static void solvePart1(Stream<String> lines) {
 
@@ -76,26 +74,15 @@ public class Day6 {
             for (int x = startingCoords.x(); x <= endingCoords.x(); x++) {
                 for (int y = startingCoords.y(); y <= endingCoords.y(); y++) {
                     Coords currentCoords = new Coords(x, y);
+                    lightsAndBrightness.putIfAbsent(currentCoords, 0);
+
                     if (line.startsWith("turnon")) {
-                        if (lightsAndBrightness.containsKey(currentCoords)) {
-                            lightsAndBrightness.put(currentCoords, lightsAndBrightness.get(currentCoords) + 1);
-                        } else {
-                            lightsAndBrightness.put(currentCoords, 1);
-                        }
+                        lightsAndBrightness.put(currentCoords, lightsAndBrightness.get(currentCoords) + 1);
                     } else if ( line.startsWith("turnoff")){
-                        if (lightsAndBrightness.containsKey(currentCoords)) {
-                            lightsAndBrightness.put(currentCoords, lightsAndBrightness.get(currentCoords) - 1);
-                            if (lightsAndBrightness.get(currentCoords) < 0)  {
-                                lightsAndBrightness.put(currentCoords, 0);
-                            }
-                        }
+                        lightsAndBrightness.put(currentCoords, Math.max(lightsAndBrightness.get(currentCoords) - 1, 0));
                     } else {
                         // Toggle behaviour
-                        if (lightsAndBrightness.containsKey(currentCoords)) {
-                            lightsAndBrightness.put(currentCoords, lightsAndBrightness.get(currentCoords) + 2);
-                        } else {
-                            lightsAndBrightness.put(currentCoords, 2);
-                        }
+                        lightsAndBrightness.put(currentCoords, lightsAndBrightness.get(currentCoords) + 2);
                     }
                 }
             }
