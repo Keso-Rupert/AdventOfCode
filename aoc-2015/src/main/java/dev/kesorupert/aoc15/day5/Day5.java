@@ -1,4 +1,4 @@
-package day5;
+package dev.kesorupert.aoc15.day5;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,7 +13,7 @@ public class Day5 {
 
         Supplier<Stream<String>> linesSupplier = () -> {
             try {
-                return Files.lines(Path.of("2015/src/day5/input.txt"));
+                return Files.lines(Path.of("aoc-2015/src/main/java/dev/kesorupert/aoc15/day5/input.txt"));
             } catch (IOException e) {
                 e.printStackTrace();
             }

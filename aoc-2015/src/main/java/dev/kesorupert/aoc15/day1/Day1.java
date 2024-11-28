@@ -1,4 +1,4 @@
-package day1;
+package dev.kesorupert.aoc15.day1;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -25,7 +25,7 @@ public class Day1 {
 
         // More modern way of reading the input file, using NIO2
         try {
-            String input = Files.readString(Path.of("2015/src/day1/input.txt"));
+            String input = Files.readString(Path.of("aoc-2015/src/main/java/dev/kesorupert/aoc15/day1/input.txt"));
             int floor = 0;
 
             for (char character : input.toCharArray()) {
@@ -49,7 +49,7 @@ public class Day1 {
     private static void solvePart1() {
         List<Character> inputList = new ArrayList<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader("src/day1/input.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("aoc-2015/src/main/java/dev/kesorupert/aoc15/day1/input.txt"))) {
             int cr;
             while ((cr = br.read()) != -1) {
                 char character = (char) cr;

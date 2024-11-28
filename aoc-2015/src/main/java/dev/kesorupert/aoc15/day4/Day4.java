@@ -1,4 +1,4 @@
-package day4;
+package dev.kesorupert.aoc15.day4;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;

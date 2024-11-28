@@ -1,4 +1,4 @@
-package day3;
+package dev.kesorupert.aoc15.day3;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class Day3 {
         Coords currentCoords = new Coords(0,0);
         visitsMap.put(currentCoords, 1);
 
-        try (BufferedReader reader = Files.newBufferedReader(Path.of("2015/src/day3/input.txt"))) {
+        try (BufferedReader reader = Files.newBufferedReader(Path.of("aoc-2015/src/main/java/dev/kesorupert/aoc15/day3/input.txt"))) {
             int character;
             while ((character = reader.read()) != -1) {
 
@@ -52,7 +52,7 @@ public class Day3 {
         Coords roboCoords = new Coords(0,0);
         visitsMap.put(santaCoords, 2);
 
-        try (BufferedReader reader = Files.newBufferedReader(Path.of("src/day3/input.txt"))) {
+        try (BufferedReader reader = Files.newBufferedReader(Path.of("aoc-2015/src/main/java/dev/kesorupert/aoc15/day3/input.txt"))) {
             int character;
             int position = 0;
 

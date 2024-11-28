@@ -1,4 +1,4 @@
-package util;
+package dev.kesorupert.aoc15.util;
 
 import java.io.IOException;
 import java.nio.file.Files;

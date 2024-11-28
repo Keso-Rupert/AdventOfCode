@@ -1,6 +1,6 @@
-package day6;
+package dev.kesorupert.aoc15.day6;
 
-import util.InputReader;
+import dev.kesorupert.aoc15.util.InputReader;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,7 +14,7 @@ public class Day6 {
     static Map<Coords, Integer> lightsAndBrightness = new HashMap<Coords, Integer>();
 
     public static void main(String[] args) {
-        InputReader reader = new InputReader("2015/src/day6/input.txt");
+        InputReader reader = new InputReader("aoc-2015/src/main/java/dev/kesorupert/aoc15/day6/input.txt");
 
         solvePart1(reader.getInputStreamForLines());
         solvePart2(reader.getInputStreamForLines());
