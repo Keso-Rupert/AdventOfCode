@@ -26,6 +26,7 @@ public class Day1 {
 
         calculateDistance(firstList, secondList);
         calculateSimilarityScore(firstList, secondList);
+        calculateSimilarityScoreEasyWay(firstList, secondList);
 
     }
 
@@ -39,19 +40,47 @@ public class Day1 {
         System.out.println("Part 1: " + distance);
     }
 
-    public static void calculateSimilarityScore(List<Integer> firstList, List<Integer> secondList) {
-        Map<Integer, Integer> locationIdAndOccurences = new HashMap<>();
+    public static void calculateSimilarityScoreEasyWay(List<Integer> firstList, List<Integer> secondList) {
+        Map<Integer, Integer> locationIdAndOccurrences = new HashMap<>();
         int score = 0;
+
+        long start = System.currentTimeMillis();
 
         for (int i = 0; i < firstList.size(); i++) {
             int firstListNumber = firstList.get(i);
-            locationIdAndOccurences.putIfAbsent(firstListNumber, 0);
+
+            Integer occurrences = (int) secondList.stream().filter(nr -> nr == firstListNumber).count();
+
+            locationIdAndOccurrences.put(firstListNumber, occurrences);
+
+        }
+
+        for (Map.Entry<Integer, Integer> entry : locationIdAndOccurrences.entrySet()) {
+            score += entry.getKey() * entry.getValue();
+        }
+
+        long finish = System.currentTimeMillis();
+        long timeElapsed = finish - start;
+
+        System.out.println("Part 2 alternative: " + score);
+        System.out.println("Time elapsed: " + timeElapsed);
+    }
+
+    public static void calculateSimilarityScore(List<Integer> firstList, List<Integer> secondList) {
+        Map<Integer, Integer> locationIdAndOccurrences = new HashMap<>();
+        int score = 0;
+
+        long start = System.currentTimeMillis();
+
+        for (int i = 0; i < firstList.size(); i++) {
+            int firstListNumber = firstList.get(i);
+            locationIdAndOccurrences.putIfAbsent(firstListNumber, 0);
             int secondListPosition = 0;
 
             while(true) {
                 // If nr in first list is same as number in secondlist, update map and go to next position in second list
                 if (firstListNumber == secondList.get(secondListPosition)) {
-                    locationIdAndOccurences.put(firstListNumber, (locationIdAndOccurences.get(firstListNumber) + 1));
+                    locationIdAndOccurrences.put(firstListNumber, (locationIdAndOccurrences.get(firstListNumber) + 1));
                     secondListPosition++;
                 } else if (firstListNumber > secondList.get(secondListPosition)) {
                     // if the first number is bigger than the second number, we go to next position in second list
@@ -64,11 +93,15 @@ public class Day1 {
             }
         }
 
-        for (Map.Entry<Integer, Integer> entry : locationIdAndOccurences.entrySet()) {
+        for (Map.Entry<Integer, Integer> entry : locationIdAndOccurrences.entrySet()) {
             score += entry.getKey() * entry.getValue();
         }
 
+        long finish = System.currentTimeMillis();
+        long timeElapsed = finish - start;
+
         System.out.println("Part 2: " + score);
+        System.out.println("Time elapsed: " + timeElapsed);
 
     }
 
