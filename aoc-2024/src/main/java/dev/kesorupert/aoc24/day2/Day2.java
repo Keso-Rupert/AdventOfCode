@@ -31,12 +31,23 @@ public class Day2 {
         }
 
         System.out.println("Part 1: " + safeLevelsPart1);
+        System.out.println("Part 2: " + safeLevelsPart2);
 
     }
 
     private static boolean checkIfLevelIsSafePart2(List<Integer> reportData) {
         boolean safe = false;
+        boolean levelRemoved = false;
 
+        if (checkIfLevelIsSafe(reportData)) {
+            return true;
+        } else {
+            for (int i = 0; i < reportData.size(); i++) {
+                List<Integer> reportDataDampened = new ArrayList<>(reportData);
+                reportDataDampened.remove(i);
+                if (checkIfLevelIsSafe(reportDataDampened)) return true;
+            }
+        }
         return safe;
     }
 
@@ -54,7 +65,7 @@ public class Day2 {
                     descending = true;
                 } else {
                     // Level is unsafe
-                    break;
+                    return false;
                 }
             }
 
@@ -69,15 +80,13 @@ public class Day2 {
                 if (difference >= 1 && difference <= 3 ) {
                     safe = true;
                 } else {
-                    safe = false;
-                    break;
+                    return false;
                 }
             } else {
                 if (difference <= -1 && difference >= -3) {
                     safe = true;
                 } else {
-                    safe = false;
-                    break;
+                    return false;
                 }
             }
             j++;
