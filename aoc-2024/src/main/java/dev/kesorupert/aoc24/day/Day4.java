@@ -3,6 +3,8 @@ package dev.kesorupert.aoc24.day;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Day4 {
 
@@ -23,6 +25,7 @@ public class Day4 {
         }
 
         solvePart1(wordGrid);
+        solvePart2(wordGrid);
 
     }
 
@@ -37,16 +40,63 @@ public class Day4 {
                     if (checkRightToLeft(wordGrid, x, y)) totalXmasses++;
                     if (checkUpToDown(wordGrid, x, y)) totalXmasses++;
                     if (checkDownToUp(wordGrid, x, y)) totalXmasses++;
-                    if (checkDiagonalRightDown(wordGrid, x, y)) totalXmasses++;
-                    if (checkDiagonalRightUp(wordGrid, x, y)) totalXmasses++;
-                    if (checkDiagonalLeftDown(wordGrid, x, y)) totalXmasses++;
-                    if (checkDiagonalLeftUp(wordGrid, x, y)) totalXmasses++;
+                    if (checkDiagonalRightDown(wordGrid, x, y, "MAS")) totalXmasses++;
+                    if (checkDiagonalRightUp(wordGrid, x, y, "MAS")) totalXmasses++;
+                    if (checkDiagonalLeftDown(wordGrid, x, y, "MAS")) totalXmasses++;
+                    if (checkDiagonalLeftUp(wordGrid, x, y, "MAS")) totalXmasses++;
                 }
             }
 
         }
 
         System.out.println("Part 1: " + totalXmasses);
+    }
+
+    public static void solvePart2(char[][] wordGrid) {
+        int totalXmasses = 0;
+        List<Coord> listOfMasCoords = new ArrayList<>();
+
+        for (int y = 0 ; y < rowLength; y++) {
+            for (int x = 0 ; x < columnLength ; x++) {
+                if (wordGrid[y][x] == 'M') {
+                    if (checkDiagonalRightDown(wordGrid, x, y, "AS")) {
+                        Coord centerMasCoord = new Coord(x+1, y+1);
+                        if (listOfMasCoords.contains(centerMasCoord)) {
+                            totalXmasses++;
+                        } else {
+                            listOfMasCoords.add(centerMasCoord);
+                        }
+                    }
+                    if (checkDiagonalRightUp(wordGrid, x, y, "AS")) {
+                        Coord centerMasCoord = new Coord(x+1, y-1);
+                        if (listOfMasCoords.contains(centerMasCoord)) {
+                            totalXmasses++;
+                        } else {
+                            listOfMasCoords.add(centerMasCoord);
+                        }
+                    }
+                    if (checkDiagonalLeftDown(wordGrid, x, y, "AS")) {
+                        Coord centerMasCoord = new Coord(x-1, y+1);
+                        if (listOfMasCoords.contains(centerMasCoord)) {
+                            totalXmasses++;
+                        } else {
+                            listOfMasCoords.add(centerMasCoord);
+                        }
+                    }
+                    if (checkDiagonalLeftUp(wordGrid, x, y, "AS")) {
+                        Coord centerMasCoord = new Coord(x-1, y-1);
+                        if (listOfMasCoords.contains(centerMasCoord)) {
+                            totalXmasses++;
+                        } else {
+                            listOfMasCoords.add(centerMasCoord);
+                        }
+                    }
+                }
+            }
+
+        }
+
+        System.out.println("Part 2: " + totalXmasses);
     }
 
     private static boolean checkLeftToRight(char[][] grid, int x, int y) {
@@ -97,50 +147,57 @@ public class Day4 {
         return false;
     }
 
-    private static boolean checkDiagonalRightUp(char[][] grid, int x, int y) {
+    private static boolean checkDiagonalRightUp(char[][] grid, int x, int y, String word) {
         // Check if there is room for the word
-        if (x < rowLength - 3 && y >= 3) {
-            StringBuilder word = new StringBuilder();
-            for (int i = 1; i <= 3 ; i++) {
-                word.append(grid[y-i][x+i]);
+        int wordLength = word.length();
+        
+        if (x < rowLength - wordLength && y >= wordLength) {
+            StringBuilder wordBuilder = new StringBuilder();
+            for (int i = 1; i <= wordLength; i++) {
+                wordBuilder.append(grid[y-i][x+i]);
             }
-            return word.toString().equals("MAS");
+            return wordBuilder.toString().equals(word);
         }
         return false;
     }
 
-    private static boolean checkDiagonalRightDown(char[][] grid, int x, int y) {
+    private static boolean checkDiagonalRightDown(char[][] grid, int x, int y, String word) {
         // Check if there is room for the word
-        if (x < rowLength - 3 && y < columnLength - 3) {
-            StringBuilder word = new StringBuilder();
-            for (int i = 1; i <= 3 ; i++) {
-                word.append(grid[y+i][x+i]);
+        int wordLength = word.length();
+        if (x < rowLength - wordLength && y < columnLength - wordLength) {
+            StringBuilder wordBuilder = new StringBuilder();
+            for (int i = 1; i <= wordLength; i++) {
+                wordBuilder.append(grid[y+i][x+i]);
             }
-            return word.toString().equals("MAS");
+            return wordBuilder.toString().equals(word);
         }
         return false;
     }
 
-    private static boolean checkDiagonalLeftUp(char[][] grid, int x, int y) {
+    private static boolean checkDiagonalLeftUp(char[][] grid, int x, int y, String word) {
         // Check if there is room for the word
-        if (x >= 3 && y >= 3) {
-            StringBuilder word = new StringBuilder();
-            for (int i = 1; i <= 3 ; i++) {
-                word.append(grid[y-i][x-i]);
+        int wordLength = word.length();
+        
+        if (x >= wordLength && y >= wordLength) {
+            StringBuilder wordBuilder = new StringBuilder();
+            for (int i = 1; i <= wordLength; i++) {
+                wordBuilder.append(grid[y-i][x-i]);
             }
-            return word.toString().equals("MAS");
+            return wordBuilder.toString().equals(word);
         }
         return false;
     }
 
-    private static boolean checkDiagonalLeftDown(char[][] grid, int x, int y) {
+    private static boolean checkDiagonalLeftDown(char[][] grid, int x, int y, String word) {
         // Check if there is room for the word
-        if (x >= 3 && y < columnLength - 3) {
-            StringBuilder word = new StringBuilder();
-            for (int i = 1; i <= 3 ; i++) {
-                word.append(grid[y+i][x-i]);
+        int wordLength = word.length();
+        
+        if (x >= wordLength && y < columnLength - wordLength) {
+            StringBuilder wordBuilder = new StringBuilder();
+            for (int i = 1; i <= wordLength; i++) {
+                wordBuilder.append(grid[y+i][x-i]);
             }
-            if ( word.toString().equals("MAS") ) {
+            if ( wordBuilder.toString().equals(word) ) {
                 return true;
             }
         }
@@ -148,3 +205,5 @@ public class Day4 {
     }
 
 }
+
+record Coord (int x, int y) {}
