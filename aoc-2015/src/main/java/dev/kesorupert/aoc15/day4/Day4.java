@@ -1,6 +1,5 @@
 package dev.kesorupert.aoc15.day4;
 
-import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -28,7 +27,7 @@ public class Day4 {
         boolean notFound = false;
         long start = System.currentTimeMillis();
 
-        while (notFound == false) {
+        while (!notFound) {
             String result = createMd5Hash(input + i);
 
             if (result.startsWith(leadingZeroes)) {

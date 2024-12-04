@@ -86,8 +86,8 @@ public class Day1 {
                     // if the first number is bigger than the second number, we go to next position in second list
                     secondListPosition++;
                 } else {
-                    // if first number is smaller, it doesn't occur in the second list or we've moved passed the values
-                    // to count and we can proceed in outer loop
+                    // if first number is smaller, it doesn't occur in the second list, or we've moved passed the values
+                    // to count, and we can proceed in outer loop
                     break;
                 }
             }

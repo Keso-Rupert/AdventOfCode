@@ -3,7 +3,6 @@ package dev.kesorupert.aoc24.day3;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -21,7 +20,7 @@ public class Day3 {
 
 
         for (String line : (Iterable<String>) lines::iterator) {
-            String[] inputSections = line.split("(?=mul\\(|do\\(\\)|don\'t\\(\\))");
+            String[] inputSections = line.split("(?=mul\\(|do\\(\\)|don't\\(\\))");
 
             for (String input : inputSections) {
                 if (doInstructionRegex.matcher(input).find()) {
