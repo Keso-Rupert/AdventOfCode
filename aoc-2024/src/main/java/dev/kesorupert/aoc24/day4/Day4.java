@@ -1,4 +1,4 @@
-package dev.kesorupert.aoc24.day;
+package dev.kesorupert.aoc24.day4;
 
 import java.io.IOException;
 import java.nio.file.Files;
