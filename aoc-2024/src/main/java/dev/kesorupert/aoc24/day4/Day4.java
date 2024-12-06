@@ -1,5 +1,7 @@
 package dev.kesorupert.aoc24.day4;
 
+import dev.kesorupert.aoc24.util.Coord;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,7 +14,7 @@ public class Day4 {
     static int columnLength = 0;
 
     public static void main(String[] args) throws IOException {
-        String[] lines = Files.lines(Path.of("aoc-2024/src/main/java/dev/kesorupert/aoc24/day/input.txt")).toArray(String[]::new);
+        String[] lines = Files.lines(Path.of("aoc-2024/src/main/java/dev/kesorupert/aoc24/day4/input.txt")).toArray(String[]::new);
         rowLength = lines.length;
         columnLength = lines[0].length();
         char[][] wordGrid = new char[rowLength][columnLength];
@@ -206,4 +208,3 @@ public class Day4 {
 
 }
 
-record Coord (int x, int y) {}
