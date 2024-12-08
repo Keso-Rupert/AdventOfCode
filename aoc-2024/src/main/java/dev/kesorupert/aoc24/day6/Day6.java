@@ -5,8 +5,7 @@ import dev.kesorupert.aoc24.util.Coord;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Day6 {
 
@@ -14,6 +13,7 @@ public class Day6 {
     static int columnLength = 0;
     static Coord startingPosition;
     static List<Coord> obstacles = new ArrayList<Coord>();
+    static Set<Coord> coordSet = new HashSet<>();
 
     public static void main(String[] args) throws IOException {
         String[] lines = Files.lines(Path.of("aoc-2024/src/main/java/dev/kesorupert/aoc24/day6/input.txt")).toArray(String[]::new);
@@ -36,17 +36,13 @@ public class Day6 {
     static void solvePart1(char[][] areaMap){
         Coord currentLocation = startingPosition;
         Direction currentDirection = Direction.NORTH;
-        int markedArea = 0;
 
         while(true) {
             // Check next position
             Coord nextPosition = getNextPosition(currentDirection, currentLocation);
 
-            // Mark the current position
-            if (areaMap[currentLocation.y()][currentLocation.x()] != 'X') {
-                areaMap[currentLocation.y()][currentLocation.x()] = 'X';
-                markedArea++;
-            }
+            // Add the current position to the set
+            coordSet.add(currentLocation);
 
             // Check if we will leave the boundaries of the grid
             if (!(nextPosition.x() >= 0 && nextPosition.y() >= 0 && nextPosition.x() < rowLength && nextPosition.y() < columnLength)) {
@@ -63,22 +59,54 @@ public class Day6 {
             currentLocation = nextPosition;
         }
 
-        System.out.println("Part 1: " + markedArea);
+        System.out.println("Part 1: " + coordSet.size());
+
+    }
+
+    static void solvePart2(char[][] areaMap){
+        int nrOfObstacles = 0;
+        // We can test all traversed coordinates instead of all coordinates in the grid to save time
+        for (Coord coord : coordSet) {
+            Coord currentLocation = startingPosition;
+            Direction currentDirection = Direction.NORTH;
+            Set<CoordDirection> coordDirectionSet = new HashSet<>();
+            coordDirectionSet.add(new CoordDirection(currentLocation, currentDirection));
+
+            while(true) {
+                // Check next position
+                Coord nextPosition = getNextPosition(currentDirection, currentLocation);
+
+                // If we leave the grid, we have not found a loop
+                if (!(nextPosition.x() >= 0 && nextPosition.y() >= 0 && nextPosition.x() < rowLength && nextPosition.y() < columnLength)) {
+                    break;
+                }
+
+                // Check the next block if we have to turn and decide direction, then alter nextPosition
+                if (areaMap[nextPosition.y()][nextPosition.x()] == '#' || nextPosition.equals(coord)) {
+                    currentDirection = Direction.fromValue((currentDirection.direction % 4) + 1);
+                    // If the position and direction is already in the set, we have encountered a loop
+                    if (!coordDirectionSet.add(new CoordDirection(currentLocation, currentDirection))) {
+                        nrOfObstacles++;
+                        break;
+                    }
+                } else {
+                    // Take a step
+                    currentLocation = nextPosition;
+                }
+            }
+        }
+
+        System.out.println("Part 2: " + nrOfObstacles);
 
     }
 
     private static Coord getNextPosition(Direction currentDirection, Coord currentLocation) {
-        Coord nextPosition = switch(currentDirection) {
+        return switch(currentDirection) {
             case NORTH -> new Coord(currentLocation.x(), currentLocation.y() - 1);
             case SOUTH -> new Coord(currentLocation.x(), currentLocation.y() + 1);
             case EAST -> new Coord(currentLocation.x() + 1, currentLocation.y());
             case WEST -> new Coord(currentLocation.x() - 1, currentLocation.y());
         };
-        return nextPosition;
-    }
-
-    static void solvePart2(char[][] areaMap){
-
     }
 
 }
@@ -97,9 +125,11 @@ enum Direction {
 
     static Direction fromValue(Integer value) {
         for (Direction dir : Direction.values()) {
-            if (dir.direction == value) return dir;
+            if (Objects.equals(dir.direction, value)) return dir;
         }
         throw new IllegalArgumentException("Provide valid direction value between 1 and 4, value provided = " + value);
     }
 }
+
+record CoordDirection(Coord coord, Direction direction){}
 
