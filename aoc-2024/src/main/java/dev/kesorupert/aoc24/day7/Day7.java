@@ -11,6 +11,7 @@ public class Day7 {
     public static void main(String[] args) throws IOException {
         List<String> lines = Files.lines(Path.of("aoc-2024/src/main/java/dev/kesorupert/aoc24/day7/input.txt")).toList();
         solvePart1(lines);
+        solvePart2(lines);
 
     }
 
@@ -48,16 +49,42 @@ public class Day7 {
                     totalSum += result;
                     continue wordLoop;
                 }
-
-
             }
-
-
 
         }
 
         System.out.println("Part 1: " + totalSum);
 
+    }
+
+    static void solvePart2(List<String> lines){
+
+        Long totalSum = 0L;
+
+        for (String line : lines) {
+            Long result = Long.parseLong(line.split(":")[0]);
+            Long[] partsOfSum = Arrays.stream(line.split(": ")[1].split(" ")).map(Long::parseLong).toArray(Long[]::new);
+
+                if (evaluateSum(result, partsOfSum, 0, partsOfSum[0])) {
+                    totalSum += result;
+                }
+        }
+
+        System.out.println("Part 2: " + totalSum);
+
+    }
+
+    static boolean evaluateSum(long result, Long[] partsOfSum, int index, long currentResult) {
+        // Check if we have already gone too far
+        if (currentResult > result) return false;
+        // End condition is when we've reached the end of the array
+        if (index == partsOfSum.length - 1) {
+            return currentResult == result;
+        }
+        // Recursion fun starts here
+        return evaluateSum(result, partsOfSum, index + 1, currentResult + partsOfSum[index + 1]) ||
+                evaluateSum(result, partsOfSum, index + 1, currentResult * partsOfSum[index + 1]) ||
+                evaluateSum(result, partsOfSum, index + 1, Long.parseLong(""+currentResult + partsOfSum[index + 1]));
     }
 
 }

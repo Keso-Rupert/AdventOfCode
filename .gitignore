@@ -2,3 +2,5 @@
 *.iml
 out
 *.class
+*/test.txt
+*/input.txt
