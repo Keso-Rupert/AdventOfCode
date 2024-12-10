@@ -3,74 +3,30 @@ package dev.kesorupert.aoc24.day9;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Day9 {
 
     public static void main(String[] args) throws IOException {
-        String input = Files.readString(Path.of("aoc-2024/src/main/java/dev/kesorupert/aoc24/day9/test.txt"));
-        
+        String input = Files.readString(Path.of("aoc-2024/src/main/java/dev/kesorupert/aoc24/day9/input.txt"));
+//        input = "14113"; // solution should be 132
         solvePart1(input);
 
     }
     
     static void solvePart1(String input) {
-        String blocksAndIds = createFileAndFreeBlocks(input);
-        String blocksAndIdsCompressed = moveBlocksToFreeSpace(blocksAndIds);
+        List<Integer> blocksAndIds = createFileAndFreeBlocks(input);
+        List<Integer> blocksAndIdsCompressed = moveBlocksToFreeSpace(blocksAndIds);
         long results = calculateChecksum(blocksAndIdsCompressed);
 
-        System.out.println(blocksAndIds);
-        System.out.println(blocksAndIdsCompressed);
+//        System.out.println(blocksAndIds); // This is correct
+//        System.out.println(blocksAndIdsCompressed);
         System.out.println("Part 1: " + results);
     }
 
-    private static long calculateChecksum(String blocksAndIds) {
-        long result = 0;
-        for (int c = 0; c < blocksAndIds.length(); c++) {
-            if (blocksAndIds.charAt(c) != '.') {
-                result += ((long) c * Integer.parseInt(String.valueOf(blocksAndIds.charAt(c)))); // OMG
-            } else {
-                // When we've reached '.' we have reached the end
-                return result;
-            }
-        }
-
-        return result;
-    }
-
-    private static String moveBlocksToFreeSpace(String blocksAndIds) {
-        StringBuilder compressedString = new StringBuilder(blocksAndIds.length());
-
-        int currentFileIndex = blocksAndIds.length()-1;
-
-        // Loop through String that is being compressed
-        for (int d = 0; d < blocksAndIds.length(); d++) {
-
-            if (d > currentFileIndex) { // Why does this work on the test input but not on the full input?!
-                break;
-            }
-
-            // If we find a number, we can simply move it
-            if (blocksAndIds.charAt(d) != '.') {
-                compressedString.replace(d, d+1, String.valueOf(blocksAndIds.charAt(d)));
-            } else {
-                // Else we find numbers starting from the end
-                while(blocksAndIds.charAt(currentFileIndex) == '.') {
-                    currentFileIndex--;
-                }
-
-                // If we find an empty place, replace that with a number
-                compressedString.replace(d, d+1, String.valueOf(blocksAndIds.charAt(currentFileIndex)));
-                currentFileIndex--;
-
-            }
-        }
-
-        return compressedString.toString();
-
-    }
-
-    static String createFileAndFreeBlocks(String input) {
-        StringBuilder blocksAndIds = new StringBuilder();
+    static List<Integer> createFileAndFreeBlocks(String input) {
+        List<Integer> blocksAndIds = new ArrayList<>();
         boolean file = true;
         int blockId = 0;
 
@@ -79,9 +35,9 @@ public class Day9 {
 
             for (int j = 0; j < blockFileLength; j++) {
                 if (file) {
-                    blocksAndIds.append(blockId);
+                    blocksAndIds.add(blockId);
                 } else {
-                    blocksAndIds.append('.');
+                    blocksAndIds.add(-1);
                 }
             }
 
@@ -91,7 +47,55 @@ public class Day9 {
             // Switch file boolean
             file = !file;
         }
-        return blocksAndIds.toString();
+        return blocksAndIds;
+    }
+
+    private static List<Integer> moveBlocksToFreeSpace(List<Integer> blocksAndIds) {
+        // MISTAKE IS THAT IM SUPPOSED TO MOVE ENTIRE BLOCKS, so 8 9 and then 10 will be two characters!!
+
+        List<Integer> compressedFile = new ArrayList<>();
+
+        int reverseFileIndex = blocksAndIds.size()-1;
+
+        // Loop through String that is being compressed
+        for (int index = 0; index < blocksAndIds.size(); index++) {
+
+            if (reverseFileIndex < index ) {
+                break;
+            }
+
+            // If we find a number, we can simply move it
+            if (blocksAndIds.get(index) != -1) {
+                compressedFile.add(index, blocksAndIds.get(index));
+            } else {
+                // Else we find numbers starting from the end
+                while(blocksAndIds.get(reverseFileIndex) == -1) {
+                    reverseFileIndex--;
+                }
+
+                // If we find an empty place, replace that with a number
+                compressedFile.add(index, blocksAndIds.get(reverseFileIndex));
+                reverseFileIndex--;
+
+            }
+        }
+
+        return compressedFile;
+
+    }
+
+    private static long calculateChecksum(List<Integer> blocksAndIds) {
+        long result = 0;
+        for (int c = 0; c < blocksAndIds.size(); c++) {
+            if (blocksAndIds.get(c) != -1) {
+                result += ((long) c * blocksAndIds.get(c));
+            } else {
+                // When we've reached '.' we have reached the end
+                return result;
+            }
+        }
+
+        return result;
     }
 
 }
