@@ -1,55 +1,70 @@
 package dev.kesorupert.aoc24.day11;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Day11 {
 
     public static void main(String[] args) {
         String input = "28591 78 0 3159881 4254 524155 598 1";
 //        input = "125 17";
-        int blinks = 25;
 
         List<Long> stones = new ArrayList<>();
         for (String in : input.split(" ")) {
             stones.add(Long.parseLong(in));
         }
 
-        for (int i = 0; i < blinks; i++) {
-            System.out.println("Blink " + i+1);
-            List<Long> newStones = new ArrayList<>();
-            while(newStones.size() < stones.size()) newStones.add(0L);
-            int listSize = stones.size();
-            int newListSize = listSize;
-            int index = 0;
-            int newIndex = 0;
-            while (true) {
-                if (index >= listSize) break;
-                Long stoneValue = stones.get(index);
-                String stoneString = String.valueOf(stoneValue);
-                int stoneLength = stoneString.length();
+        long start = System.currentTimeMillis();
 
-                if (stoneValue == 0) {
-                    newStones.set(newIndex, 1L);
-                } else if (stoneLength % 2 == 0) {
-                    Long stoneA = Long.parseLong(stoneString.substring(0, stoneLength/2));
-                    Long stoneB = Long.parseLong(stoneString.substring(stoneLength/2));
-                    newStones.add(newIndex, stoneA);
-                    newListSize++;
-                    newIndex++;
-                    newStones.set(newIndex, stoneB);
-                } else {
-                    newStones.set(newIndex, stoneValue * 2024);
-                }
-                newIndex++;
-                index++;
-            }
-            stones = newStones;
-            listSize = newListSize;
+        System.out.println("Part 1: " + solve(25, stones));
+
+        long finish = System.currentTimeMillis();
+        long timeElapsed = finish - start;
+        System.out.println("Time elapsed: " + timeElapsed);
+
+        start = System.currentTimeMillis();
+
+        System.out.println("Part 2: " + solve(75, stones));
+
+        finish = System.currentTimeMillis();
+        timeElapsed = finish - start;
+        System.out.println("Time elapsed: " + timeElapsed);
+
+    }
+
+    private static long solve(int blinks, List<Long> stones) {
+        // Let's create a Map where we maintain the numbers and how often they occur
+        Map<Long, Long> stonesMap = stones.stream().collect(Collectors.toMap(l-> l, l -> 1L));
+
+        for (int i = 0; i < blinks; i++) {
+            System.out.println("Blink " + (i+1));
+            Map<Long, Long> newStones = new HashMap<>();
+
+            stonesMap.forEach((stone, occurrences) -> {
+                blink(stone).forEach(newStone -> newStones.merge(newStone, occurrences, Long::sum));
+            });
+            stonesMap = newStones;
         }
 
-        System.out.println("Part 1: " + stones.size());
+        return stonesMap.values().stream().mapToLong(Long::longValue).sum();
+    }
 
+    private static List<Long> blink(Long stone) {
+        String stoneString = String.valueOf(stone);
+        int stoneLength = stoneString.length();
+
+        if (stone == 0) {
+            return List.of(1L);
+        } else if (stoneLength % 2 == 0) {
+            Long stoneA = Long.parseLong(stoneString.substring(0, stoneLength / 2));
+            Long stoneB = Long.parseLong(stoneString.substring(stoneLength / 2));
+            return List.of(stoneA, stoneB);
+        } else {
+            return List.of(stone * 2024);
+        }
     }
 
 }
