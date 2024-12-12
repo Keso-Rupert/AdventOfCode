@@ -1,11 +1,17 @@
 package dev.kesorupert.aoc24.day6;
 
 import dev.kesorupert.aoc24.util.Coord;
+import dev.kesorupert.aoc24.util.Direction;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static dev.kesorupert.aoc24.util.GridUtil.getNextPosition;
 
 public class Day6 {
 
@@ -100,35 +106,6 @@ public class Day6 {
 
     }
 
-    private static Coord getNextPosition(Direction currentDirection, Coord currentLocation) {
-        return switch(currentDirection) {
-            case NORTH -> new Coord(currentLocation.x(), currentLocation.y() - 1);
-            case SOUTH -> new Coord(currentLocation.x(), currentLocation.y() + 1);
-            case EAST -> new Coord(currentLocation.x() + 1, currentLocation.y());
-            case WEST -> new Coord(currentLocation.x() - 1, currentLocation.y());
-        };
-    }
-
-}
-
-enum Direction {
-    NORTH(1),
-    EAST(2),
-    SOUTH(3),
-    WEST(4);
-
-    public final Integer direction;
-
-    Direction(Integer direction) {
-        this.direction = direction;
-    }
-
-    static Direction fromValue(Integer value) {
-        for (Direction dir : Direction.values()) {
-            if (Objects.equals(dir.direction, value)) return dir;
-        }
-        throw new IllegalArgumentException("Provide valid direction value between 1 and 4, value provided = " + value);
-    }
 }
 
 record CoordDirection(Coord coord, Direction direction){}
